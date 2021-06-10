@@ -32,7 +32,7 @@
 /build/
 /pubspec.yaml
 /pubspec.lock
-todo
+/todo
 
 # Web related
 lib/generated_plugin_registrant.dart

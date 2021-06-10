@@ -1,0 +1,131 @@
+- registration
+  * email - validate email
+  * phone - mask, validate, error
+  * tin/ein - mask, validate, error
+  * terms check - validate, display error
+  * display error on material design snackbar
+
+- login
+  * phone - mask, validate, error
+  * display error on material design snackbar
+
+- otp
+  * validate otp
+  * phone - mask, validate, error
+  * display error on material design snackbar
+
+- sidebar menu
+  * verified check
+  * need help modal
+  * current index
+  * logout
+
+- girish sahypa
+  * intro cards
+  * unverified -> send to settings page
+  * freightcab logo
+
+- all shipments page
+  * search box
+  * offer cards with all details, status (margin, padding)
+  * lazy load pagination, query
+  * empty page
+
+- upcoming page
+  * search box
+  * offer cards with all details, status
+  * empty page
+
+- in progress
+  * search box
+  * empty page
+  * offer cards with all details, status
+
+- team
+  * add team member, all fields
+  * get team members list
+  * edit team member
+  * delete team member
+  * all text fields, buttons with masks
+
+- location
+  * add new location
+    * google maps place suggestions
+    * marker and auto field complete after selection
+    * custom expansion panel
+    * modal routes
+
+  * edit location
+    * all text fields and marker
+    * check and collapse/expand if operational/scheduling empty
+
+  * delete location custom modal
+  * get user locations
+
+- FAQ
+  * first item is open
+
+- settings
+  * enable/disable fields
+  * profile info
+    * tin/ein dropdown
+    * state dropdown
+    * copy company address
+    * billing address
+    * primary contact
+    * billing contact (copy)
+    * check verified
+    * save changes
+    * requestVerification
+    * can not change
+  * notifications
+    * subscribe
+    * unsubscribe
+    * display snackbar for all actions
+
+- create shipment
+  * reefer max/min/type temperature
+  * section2, fields, custom checkboxes, dropdowns
+  * select location
+  * appointment type
+  * start date/time
+  * end date/time
+  * cant choose past date
+  * edit facility
+    * copy location info
+    * expand/collapse operational/scheduling
+    * save state(cache)
+  * can create multiple stops
+  * get distance in mile
+  * get transitTime
+  * transitTime into readable format
+
+- review shipment
+  * google maps draw route between coordinates
+  * status card details based on shipment status
+  * stop point cards (uneditable)
+  * view facility
+  * 4 info cards
+  * button(s) 
+  * check user verified ? Get Quote : WaitForVerification
+  * upcoming page dushmeli
+  * after getquote -> status change -> waitingForPrice
+  * can reject shipment, in case of rejection, 
+    change status and pass it to past shipments
+  * after price defined -> book shipment and upcoming
+  * after carrier requested load -> select carrier - done (not tested)
+
+more
+- terms and conditions -> done
+- consistant modals -> done
+- push notifications (background, foreground services) -> done
+- material design snackbars -> done
+
+pending
+  - launch icons (ios)
+  - fcm notifications
+  - draft page
+  - transitde gecen yoly bn galan yoly cyzdyrmaly
+  - routes
+  - code refactoring
+ 

@@ -1,0 +1,25 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - graphql/queries/**
+      - graphql/schema.graphql
+    builders:
+      artemis:
+        options:
+          #fragments_glob: graphql/fragments/common.graphql
+          schema_mapping:
+            - schema: graphql/schema.graphql
+              queries_glob: graphql/queries/*.graphql
+              output: lib/models/graphql/q.graphql_api.dart
+              naming_scheme: pathedWithFields
+          scalar_mapping:
+            - graphql_type: DateTime
+              dart_type: String
+            - graphql_type: DateTimeTz
+              dart_type: String
+            - graphql_type: Date
+              dart_type: String
+              #TODO
+            - graphql_type: Upload
+              dart_type: String

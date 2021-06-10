@@ -1,0 +1,1370 @@
+type Query {
+  me: User
+  carrier(id: ID!): Carrier
+  userCarrier: Carrier
+  carriers(
+    id: ID
+    name: String
+    mc_dot_number: String
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): CarrierPaginator
+  userCarrierOffers(
+    state: [ShipmentStatusEnum]
+    offer_uuid: [String]
+    driver_id: ID
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): OfferPaginator
+  regions: [Region!]!
+  userRequestedLoads(
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): RequestedLoadPaginator
+  userRequestedLoad(id: ID): RequestedLoad
+  allRequestedLoads(
+    carrier_id: ID
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): RequestedLoadPaginator
+  userNotificationSubscriptions(subscribed: Boolean): [NotificationSubsriptions]
+  userNotifications(
+    unread: Boolean
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): NotificationPaginator
+  offer(offer_id: ID, uuid: String): Offer
+  offers(
+    state: ShipmentStatusEnum
+    shipper_id: ID
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): OfferPaginator
+  offersSearch(
+    offer_id: [ID!]
+    filters: Filters
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): OfferPaginator
+  post(id: ID): Post
+  posts(
+    category: PostCategoriesEnum
+    sub_category: PostSubCategoriesEnum
+    title: String
+    post_status: PostStatusEnum
+    sort: SortTypesEnum
+    id: ID
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): PostPaginator
+  userShipper: Shipper
+  shipper(id: ID!): Shipper
+  shippers(
+    id: ID
+    name: String
+    tin_ein_number: String
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): ShipperPaginator
+  usersCount: [UsersCount]
+  companiesCount: [CompaniesCount]
+  user(id: ID): User
+  users(
+    phone: String
+    type: String
+    role: UserRolesEnum
+    company_id: ID
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): UserPaginator
+  getTeamMembers(
+    search_string: String
+    role: UserRolesEnum
+    sort: SortTypesEnum
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): UserPaginator
+  userLocationProfile(id: ID!): LocationProfile
+  userLocationProfiles(
+    name: String
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): LocationProfilePaginator
+  shipperLocationProfiles(
+    name: String
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): LocationProfilePaginator
+  shipperLocationProfile(id: ID!): LocationProfile
+  userRates(
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): RatePaginator
+  userShipment(id: ID, uuid: String): Shipment
+  userShipments(
+    requested_truck_types: [TruckTypesEnum!]
+    state: [ShipmentStatusEnum!]
+
+    # Limits number of fetched elements.
+    first: Int!
+
+    # The offset from which elements are returned.
+    page: Int
+  ): ShipmentPaginator
+  getEstimations(locations: [LocationCollectionInput]!): Estimations
+  stop(id: ID): Stops
+}
+
+type User {
+  id: ID!
+  company_id: ID
+  carrier: Carrier
+  shipper: Shipper
+  firstname: String!
+  lastname: String!
+  email: String!
+  phone: String!
+  role: UserRolesEnum!
+  type: String
+  last_usage_at: DateTime
+  activated: Boolean!
+  email_verified: Boolean!
+  is_blocked: Boolean
+  applied_tc_version: Float
+  meta: DriversMeta
+  loads: [RequestedLoad]
+  rate_score: Int
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Carrier {
+  id: ID!
+  name: String
+  mc_dot_number: String!
+  users: [User]
+  contact: CarrierContactType
+  address: CarrierAddressType
+  trucks: [Truck!]
+  truck_accessorials: [TruckAccessorialsEnum]
+  operating_regions: [String!]
+  documents: [Documents]
+  verified: Boolean
+  status: String!
+  rate_score: Int
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type CarrierContactType {
+  phone: String
+  email: String
+  fullname: String
+}
+
+type CarrierAddressType {
+  state: String
+  city: String
+  zip_code: Int
+  address: String
+  address2: String
+}
+
+type Truck {
+  type: TruckTypesEnum
+  count: Int
+}
+
+enum TruckTypesEnum {
+  DRY_VAN
+  REEFER
+}
+
+enum TruckAccessorialsEnum {
+  TWIC_CARD
+  PIPE_STAKES
+  OVERSIZE_PERMIT
+  CNG_AVAILABLE
+}
+
+type Documents {
+  id: ID!
+  stop_id: ID
+  shipment_uuid: String
+  carrier_id: ID
+  user_id: ID!
+  url: String
+  name: String!
+  file_type: String!
+  mime_type: String!
+  approved: Boolean
+  stop: Stops
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type Stops {
+  id: ID!
+  shipment_uuid: String!
+  location_profile_id: ID
+  shipper_id: ID!
+  order_index: Int!
+  appointment_type: AppointmentTypesEnum!
+  start_time: DateTimeTz!
+  end_time: DateTimeTz
+  started_at: DateTimeTz
+  completed_at: DateTimeTz
+  type: StopTypesEnum!
+  loading_type: String!
+  created_at: DateTime
+  updated_at: DateTime
+  shipment: Shipment
+  location_profile: StopLocationProfile
+}
+
+enum AppointmentTypesEnum {
+  FIRST_COME_FIRST_TAKE
+  ALREADY_MADE
+  TO_BE_MADE
+}
+
+# A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32:00+00`.
+scalar DateTimeTz
+
+enum StopTypesEnum {
+  PICKUP
+  RETURN
+  DROPOFF
+}
+
+# A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`.
+scalar DateTime
+
+type Shipment {
+  id: ID
+  short_name: String
+  uuid: String!
+  shipper_id: ID
+  driver_id: ID
+  carrier_id: ID
+  carrier_assigned: Boolean
+  driver_assigned: Boolean
+  items: [Items]
+  route_distance_miles: Float
+  route_duration_minutes: Int
+  requested_truck_types: [TruckTypesEnum]
+  trailer: Trailer
+  accessorials: [AccessorialsEnum]
+  load_description: String
+  state: ShipmentStatusEnum!
+  created_at: DateTime!
+  updated_at: DateTime!
+  archived_at: DateTime
+  shipper: Shipper
+  carrier: Carrier
+  driver: User
+  offer: Offer
+  stops: [Stops!]
+  path: [Path]
+  documents: [Documents!]
+  logs: [ShipmentLogs]
+  rate: Rate
+}
+
+type Items {
+  id: ID!
+  shipment_uuid: String!
+  handling_piece: HandlingPiece
+  units: Units
+  weight: Weight
+  description: String
+  shipment: Shipment
+  offer: Offer
+}
+
+type HandlingPiece {
+  piece_type: ItemPieceTypesEnum!
+  piece_count: Int!
+}
+
+enum ItemPieceTypesEnum {
+  PALLETS
+  PALLETS_OVERSIZE
+  BAGS
+  BALES
+  BOXES
+  BUNDLES
+  CONTAINERS
+  CRATES
+  ROLLS
+  TOTES
+  OTHER
+  NOT_PACKAGE
+}
+
+type Units {
+  unit_type: ItemUnitTypesEnum!
+  unit_count: Int!
+}
+
+enum ItemUnitTypesEnum {
+  UNITS
+  CASES
+  CASE_EQUIVALENTS
+  KEGS
+}
+
+type Weight {
+  weight: Int!
+  weight_unit: WeightUnitTypesEnum!
+}
+
+enum WeightUnitTypesEnum {
+  LB
+}
+
+type Offer {
+  id: ID!
+  uuid: String!
+  shipper_id: String!
+  state: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  shipment: Shipment
+  bid: [Bid]
+  carrier_accepted_bid: Boolean!
+}
+
+type Bid {
+  id: ID!
+  type: BidTypeEnum!
+  cents: String!
+  offer_uuid: String!
+  carrier_id: ID
+  carrier: Carrier
+  offer: Offer
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+enum BidTypeEnum {
+  OPEN_PRICE
+  ADMIN_PRICE
+  SHIPPER_PRICE
+  BID
+  ACCEPT
+}
+
+type Trailer {
+  temperature_max: Int
+  temperature_min: Int
+  temperature_unit: TemperatureUnitsEnum
+}
+
+enum TemperatureUnitsEnum {
+  F
+  C
+}
+
+enum AccessorialsEnum {
+  DRIVER_ASSIST
+  FOOD_GRADE_TRAILER
+  LOAD_BARS_LOAD_LOCKS
+  PIPE_STAKES
+  PPE
+  STRAPS
+  TWIC_REQUIRED
+  FOOD_GRADE
+  TRAILER_10_YEARS_OR_NEWER
+  LOAD_BARS
+  SHIPPER_REQUIRES_MASK_GLOVES
+}
+
+enum ShipmentStatusEnum {
+  CREATED
+  REQUEST_IN_PROGRESS
+  REJECTED_BY_SHIPPER
+  PRICE_DEFINED
+  PRICE_ACCEPTED
+  UNASSIGNED
+  CARRIER_ASSIGNED
+  DRIVER_ASSIGNED
+  DISPATCHED
+  AT_PICKUP
+  IN_TRANSIT
+  AT_DELIVERY
+  DELIVERED
+  COMPLETED
+  PENDING
+  FINISHED
+  PAYMENT_IN_PROGRESS
+  IN_PROGRESS
+  ALERTS
+  EXCEPTIONS
+  WARNINGS
+  ALL
+  ARCHIVED
+  TRASH
+}
+
+type Shipper {
+  id: ID!
+  name: String!
+  tin_ein_number: String!
+  verified: Boolean
+  address: ShipperAddressType
+  billing_address: BillingAddressType
+  primary_contact: PrimaryContactType
+  billing_contact: BillingContactType
+  documents: [Documents]
+  users: [User]
+  updated_at: DateTime
+  created_at: DateTime
+}
+
+type ShipperAddressType {
+  address: String
+  address2: String
+  city: String
+  state: String
+  zip_code: Int
+}
+
+type BillingAddressType {
+  address: String
+  address2: String
+  city: String
+  state: String
+  zip_code: Int
+}
+
+type PrimaryContactType {
+  fullname: String
+  email: String
+  phone: String
+}
+
+type BillingContactType {
+  fullname: String
+  email: String
+  phone: String
+}
+
+type Path {
+  shipment_uuid: String!
+  id: ID!
+  order_index: Int!
+  coordinates: Coordinates!
+  created_at: DateTime!
+}
+
+type Coordinates {
+  lat: Float!
+  lng: Float!
+}
+
+type ShipmentLogs {
+  shipment_uuid: String!
+  id: ID!
+  name: String!
+  payload: String
+  created_at: DateTime!
+}
+
+type Rate {
+  id: ID!
+  user_id: ID!
+  shipment_uuid: String!
+  shipper_id: ID!
+  carrier_id: ID!
+  driver_id: ID!
+  rate: Int!
+  comment: String
+  started_at: DateTimeTz
+  completed_at: DateTimeTz
+  shipment: Shipment
+  driver: User
+  user: User
+  carrier: Carrier
+  shipper: Shipper
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type StopLocationProfile {
+  location_name: String!
+  coordinates: Coordinates
+  address: Address
+  operational_contact: Contacts
+  scheduling_contact: Contacts
+  notes: String
+}
+
+type Address {
+  full: String!
+  city: String
+  state: String
+  street: String
+  street_number: Int
+  place_id: String
+}
+
+type Contacts {
+  contact_name: String
+  email: String
+  phone_number: String
+  notes: String
+}
+
+enum UserRolesEnum {
+  ALL
+  CARRIER_DRIVER
+  CARRIER_OWNER_OPERATOR
+  CARRIER_DISPATCH_OFFICE
+  CARRIER_DISPATCH_DRIVER
+  SHIPPER
+  SHIPPER_ASSISTANT
+  ADMIN
+  ADMIN_ASSISTANT
+}
+
+type DriversMeta {
+  miles: Float
+  minutes: Int
+  completed_shipment: Int
+}
+
+type RequestedLoad {
+  id: ID!
+  uuid: String
+  user_id: ID
+  carrier_id: ID
+  is_recurring_request: Boolean
+  notification_enabled: Boolean
+  number_offers: Int
+  truck_types: [TruckTypesEnum]
+  pickup_radius_miles: Int
+  dropoff_radius_miles: Int
+  from_coordinates: Coordinates
+  from_city: String
+  from_state: String
+  to_coordinates: Coordinates
+  to_city: String
+  to_state: String
+  offers: [Offer]
+  carrier: Carrier
+  dates: [RequestedLoadDate]
+}
+
+type RequestedLoadDate {
+  requested_load_uuid: String
+  date: DateTimeTz!
+}
+
+enum SortTypesEnum {
+  CREATED_AT
+  UPDATED_AT
+}
+
+# A paginated list of Carrier items.
+type CarrierPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Carrier items.
+  data: [Carrier!]!
+}
+
+# Pagination information about the corresponding list of items.
+type PaginatorInfo {
+  # Total count of available items in the page.
+  count: Int!
+
+  # Current pagination page.
+  currentPage: Int!
+
+  # Index of first item in the current page.
+  firstItem: Int
+
+  # If collection has more pages.
+  hasMorePages: Boolean!
+
+  # Index of last item in the current page.
+  lastItem: Int
+
+  # Last page number of the collection.
+  lastPage: Int!
+
+  # Number of items per page in the collection.
+  perPage: Int!
+
+  # Total items available in the collection.
+  total: Int!
+}
+
+# A paginated list of Offer items.
+type OfferPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Offer items.
+  data: [Offer!]!
+}
+
+type Region {
+  id: ID!
+  region: String!
+  sub_region: String!
+}
+
+# A paginated list of RequestedLoad items.
+type RequestedLoadPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of RequestedLoad items.
+  data: [RequestedLoad!]!
+}
+
+type NotificationSubsriptions {
+  type: NotificationsTypeEnum!
+  channel: String!
+  is_subscribed: Boolean
+}
+
+enum NotificationsTypeEnum {
+  QUOTE_REQUESTED
+  PRICE_DEFINED
+  PRICE_ACCEPTED
+  CARRIER_ACCEPTED_OFFER
+  CARRIER_ASSIGNED
+  DRIVER_ASSIGNED
+  SHIPMENT_DISPATCHED
+  SHIPMENT_REJECTED
+  SHIPMENT_AT_PICKUP
+  SHIPMENT_IN_TRANSIT
+  SHIPMENT_AT_DROPOFF
+  SHIPMENT_DELIVERED
+  SHIPMENT_FINISHED
+  SHIPMENT_COMPLETED
+  COMPANY_DOCUMENT_VERIFICATION_REQUESTED
+  PAYMENT_IN_PROGRESS
+}
+
+# A paginated list of Notification items.
+type NotificationPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Notification items.
+  data: [Notification!]!
+}
+
+type Notification {
+  id: String!
+  data: NotificationDataType
+  read_at: DateTime
+  created_at: DateTime
+}
+
+type NotificationDataType {
+  title: String
+  body: String
+}
+
+input Filters {
+  truck_types: [TruckTypesEnum]
+  pickup_radius_miles: Int
+  dropoff_radius_miles: Int
+  distance: DistanceFilter
+  dates: [Date!]
+  from_coordinates: CoordinatesInput
+  from_city: String
+  from_state: String
+  to_coordinates: CoordinatesInput
+  to_city: String
+  to_state: String
+}
+
+input DistanceFilter {
+  min: Int!
+  max: Int!
+}
+
+# A date string with format `Y-m-d`, e.g. `2011-05-23`.
+scalar Date
+
+input CoordinatesInput {
+  lat: Float!
+  lng: Float!
+}
+
+type Post {
+  id: ID!
+  user_id: ID
+  title: String!
+  category: PostCategoriesEnum!
+  sub_category: PostSubCategoriesEnum!
+  description: String!
+  content_html: String!
+  post_order: Int
+  post_status: PostStatusEnum!
+  post_type: String
+  publish_at: DateTime
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+enum PostCategoriesEnum {
+  NEWS
+  FAQ
+}
+
+enum PostSubCategoriesEnum {
+  SHIPPER
+  SHIPPER_PANEL
+  CARRIER
+  CARRIER_PANEL
+}
+
+enum PostStatusEnum {
+  PUBLISH
+  DRAFT
+}
+
+# A paginated list of Post items.
+type PostPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Post items.
+  data: [Post!]!
+}
+
+# A paginated list of Shipper items.
+type ShipperPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Shipper items.
+  data: [Shipper!]!
+}
+
+type UsersCount {
+  role: String
+  count: Int
+}
+
+type CompaniesCount {
+  type: String
+  count: Int
+}
+
+# A paginated list of User items.
+type UserPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of User items.
+  data: [User!]!
+}
+
+type LocationProfile {
+  id: ID
+  shipper_id: ID!
+  user_id: ID!
+  location_name: String!
+  coordinates: Coordinates!
+  timezone: String
+  address: Address
+  operational_contact: Contacts
+  scheduling_contact: Contacts
+  notes: String
+}
+
+# A paginated list of LocationProfile items.
+type LocationProfilePaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of LocationProfile items.
+  data: [LocationProfile!]!
+}
+
+# A paginated list of Rate items.
+type RatePaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Rate items.
+  data: [Rate!]!
+}
+
+# A paginated list of Shipment items.
+type ShipmentPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Shipment items.
+  data: [Shipment!]!
+}
+
+input LocationCollectionInput {
+  coordinates: CoordinatesInput!
+  place_id: String
+}
+
+type Estimations {
+  route_distance_miles: Float
+  route_duration_minutes: Int
+}
+
+type Mutation {
+  shipperVerify(id: ID!, verification: Boolean!): String
+  carrierVerify(id: ID!, verification: Boolean!): String
+  setAdminPriceForOffer(uuid: String!, price: Int!): Offer
+  setShipperPriceForOffer(uuid: String!, price: Int!): Offer
+  approveShipmentDocument(id: ID!, status: Boolean!): Documents
+  setShipmentStatus(uuid: String!, status: ShipmentStatusEnum!): Shipment
+  userBlockStatus(id: ID!, blocked: Boolean!): String
+  createUser(user: CreateUserInput!): User
+  updateUser(user: UpdateUserInput!): User
+  requestPhoneVerification(phone: String!): String
+  verifyPhone(phone: String!, otp: String!, remember_me: Boolean): AuthPayload
+  logout: String
+  updateCarrier(
+    name: String
+    mc_dot_number: String
+    address: CarrierAddressInput
+    contact: CarrierContactInput
+  ): Carrier
+  carrierTruckAccessorialsUpdate(
+    accessorials: [TruckAccessorialsEnum]!
+  ): Carrier
+  updateTruckCount(input: [UpdateTruckCountInput!]!): [Truck!]
+  updateOperatingRegions(operating_regions: [String!]!): Carrier
+  uploadShipmentDocument(
+    uuid: String!
+    stop_id: ID!
+    file: Upload!
+    type: ShipmentDocumentTypesEnum!
+    name: String!
+  ): Documents
+  deleteShipmentDocument(id: ID!): String!
+  uploadShipperDocument(
+    file: Upload!
+    type: ShipperDocumentTypesEnum!
+    name: String!
+  ): Documents
+  deleteShipperDocument(id: ID!): String!
+  requestShipperDocumentVerification: String
+  uploadCarrierDocument(
+    type: CarrierDocumentTypesEnum!
+    file: Upload!
+    name: String!
+  ): Documents
+  deleteCarrierDocument(id: ID!): String!
+  requestCarrierDocumentVerification: String
+  createLoadRequest(input: CreateLoadRequestInput): RequestedLoad
+  updateLoadRequest(id: ID!, input: UpdateLoadRequestInput): RequestedLoad
+  deleteLoadRequest(id: ID!): String
+  markAsReadNotification(id: [String!]!): String
+  markAllNotificationsAsRead: String
+  subscribeNotification(type: NotificationsTypeEnum!, channel: String!): String
+  unSubscribeNotification(
+    type: NotificationsTypeEnum!
+    channel: String!
+  ): String
+  createOffer(input: OfferInput!): Offer
+  createPost(input: createPostInput): Post
+  updatePost(input: updatePostInput): String
+  deletePost(id: ID!): String
+  updateShipper(input: UpdateShipperInput!): Shipper
+  createCarrierUser(
+    firstname: String!
+    lastname: String!
+    email: String!
+    phone: String!
+    company_name: String!
+    mc_dot_number: String!
+    applied_tc_version: Float
+  ): User
+  createShipperUser(
+    firstname: String!
+    lastname: String!
+    email: String!
+    phone: String!
+    company_name: String!
+    tin_ein_number: String!
+    applied_tc_version: Float
+  ): User
+  addCarrierUser(
+    firstname: String!
+    lastname: String!
+    email: String
+    phone: String!
+    role: CarrierRolesEnum!
+    applied_tc_version: Float
+  ): [User]
+  addShipperUser(
+    firstname: String!
+    lastname: String!
+    email: String
+    phone: String!
+    applied_tc_version: Float
+  ): [User]
+  deleteCarrierUser(user_id: ID!): String
+  updateCarrierUser(
+    id: ID!
+    firstname: String
+    lastname: String
+    email: String
+    phone: String
+    role: CarrierRolesEnum
+  ): User
+  updateShipperUser(
+    id: ID!
+    firstname: String
+    lastname: String
+    email: String
+    phone: String
+  ): User
+  deleteShipperUser(user_id: ID!): String
+  updateUserDeviceTokens(token: String!): User
+  addLocation(input: CreateLocationProfileInput!): LocationProfile
+  editLocation(id: ID!, input: UpdateLocationProfileInput!): LocationProfile
+  deleteLocation(id: ID!): String
+  rateShipment(uuid: String!, rate: Int!, comment: String): Shipment
+  updateRateShipment(uuid: String!, rate: Int!, comment: String): Shipment
+  updateShipment(uuid: String!, shipment: UpdateShipmentInput!): Shipment
+  rejectShipment(uuid: String!): Shipment
+  requestShipmentQuote(uuid: String!): Shipment
+  acceptAdminPrice(uuid: String!): Shipment
+  acceptOffer(uuid: String): Offer
+  assignCarrierToShipment(uuid: String!, carrier_id: ID!): Shipment
+  unAssignCarrierFromShipment(uuid: String!, carrier_id: ID!): Shipment
+  assignDriverToShipment(uuid: String!, user_id: ID!): Shipment
+  unAssignDriverFromShipment(uuid: String!, user_id: ID!): Shipment
+  setShipmentDispatched(uuid: String!): Shipment
+  setShipmentFinished(uuid: String!): Shipment
+  setShipmentPaymentInProgress(uuid: String!): Shipment
+  setShipmentCompleted(uuid: String!): Shipment
+  setShipmentPath(uuid: String!, coordinates: CoordinatesInput!): String
+  refreshStops(uuid: String!, stops: [CreateStopInput]!): [Stops]
+  updateStop(id: ID!, stop: UpdateStopInput!): Stops
+  startJob(stop_id: ID!): Shipment
+  completeJob(stop_id: ID!): Shipment
+}
+
+input CreateUserInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  phone: String!
+  is_blocked: Boolean
+  activated: Boolean
+  email_verified: Boolean
+  role: UserRolesEnum!
+  company_id: ID
+}
+
+input UpdateUserInput {
+  id: ID!
+  firstname: String
+  lastname: String
+  email: String
+  phone: String!
+  is_blocked: Boolean
+  activated: Boolean
+  email_verified: Boolean
+  role: UserRolesEnum
+}
+
+type AuthPayload {
+  access_token: String
+  expires_at: String
+  user: User
+}
+
+input CarrierAddressInput {
+  state: String!
+  city: String!
+  zip_code: Int!
+  address: String
+  address2: String
+}
+
+input CarrierContactInput {
+  phone: String
+}
+
+input UpdateTruckCountInput {
+  type: TruckTypesEnum
+  count: Int
+}
+
+scalar Upload
+
+enum ShipmentDocumentTypesEnum {
+  INVOICE
+  PROOF_OF_DELIVERY
+  BILL_OF_LOAD
+}
+
+enum ShipperDocumentTypesEnum {
+  DOCUMENT_TEST_TYPE
+}
+
+enum CarrierDocumentTypesEnum {
+  OPERATING_AUTHORITY_LETTER
+  CERTIFICATE_INSURANCE
+  AUTO_LIABILITY_CHANGES
+  CARGO_COVERAGE
+  W_9
+}
+
+input CreateLoadRequestInput {
+  is_recurring_request: Boolean
+  notification_enabled: Boolean
+  truck_types: [TruckTypesEnum!]!
+  pickup_radius_miles: Int!
+  dropoff_radius_miles: Int
+  from_coordinates: CoordinatesInput!
+  from_city: String
+  from_state: String
+  to_coordinates: CoordinatesInput
+  to_city: String
+  to_state: String
+  dates: [Date!]!
+}
+
+input UpdateLoadRequestInput {
+  is_recurring_request: Boolean
+  notification_enabled: Boolean
+  truck_types: [TruckTypesEnum!]
+  pickup_radius_miles: Int
+  dropoff_radius_miles: Int
+  from_coordinates: CoordinatesInput
+  from_city: String
+  from_state: String
+  to_coordinates: CoordinatesInput
+  to_city: String
+  to_state: String
+  dates: [Date!]
+}
+
+input OfferInput {
+  open_price: Int
+  shipment: CreateShipmentInput
+}
+
+input CreateShipmentInput {
+  short_name: String
+  requested_truck_types: [TruckTypesEnum!]!
+  accessorials: [AccessorialsEnum!]
+  load_description: String
+  route_distance_miles: Float
+  route_duration_minutes: Int
+  stops: [CreateStopInput!]!
+  items: [ItemInput]
+  trailer: TrailerInput
+}
+
+input CreateStopInput {
+  location_profile_id: ID
+  appointment_type: AppointmentTypesEnum!
+  start_time: DateTimeTz!
+  end_time: DateTimeTz
+  type: StopTypesEnum!
+  loading_type: LoadingTypesEnum!
+  location_input: LocationInput!
+}
+
+enum LoadingTypesEnum {
+  LIVE
+  EMPTY_TRAILER
+}
+
+input LocationInput {
+  location_name: String!
+  coordinates: CoordinatesInput!
+  address: AddressInput!
+  operational_contact: ContactInput
+  scheduling_contact: ContactInput
+  notes: String
+}
+
+input AddressInput {
+  full: String!
+  city: String
+  state: String
+  street: String
+  street_number: Int
+  place_id: String
+}
+
+input ContactInput {
+  contact_name: String
+  email: String
+  phone_number: String
+  notes: String
+}
+
+input ItemInput {
+  description: String
+  handling_piece: HandlingPieceInput
+  units: UnitInput
+  weight: WeightInput
+}
+
+input HandlingPieceInput {
+  piece_type: ItemPieceTypesEnum!
+  piece_count: Int!
+}
+
+input UnitInput {
+  unit_type: ItemUnitTypesEnum!
+  unit_count: Int!
+}
+
+input WeightInput {
+  weight: Int!
+  weight_unit: WeightUnitTypesEnum!
+}
+
+input TrailerInput {
+  temperature_max: Int!
+  temperature_min: Int!
+  temperature_unit: TemperatureUnitsEnum!
+}
+
+input createPostInput {
+  title: String!
+  category: PostCategoriesEnum!
+  sub_category: PostSubCategoriesEnum!
+  description: String!
+  content_html: String!
+  post_order: Int
+  post_status: PostStatusEnum!
+  post_type: String
+}
+
+input updatePostInput {
+  id: ID!
+  title: String
+  category: PostCategoriesEnum
+  sub_category: PostSubCategoriesEnum
+  description: String
+  content_html: String
+  post_order: Int
+  post_status: PostStatusEnum
+  post_type: String
+}
+
+input UpdateShipperInput {
+  address: ShipperAddressInput
+  billing_address: BillingAddressInput
+  primary_contact: PrimaryContactInput
+  billing_contact: BillingContactInput
+}
+
+input ShipperAddressInput {
+  address: String!
+  address2: String
+  city: String!
+  state: String!
+  zip_code: Int!
+}
+
+input BillingAddressInput {
+  address: String
+  address2: String
+  city: String
+  state: String
+  zip_code: Int
+}
+
+input PrimaryContactInput {
+  fullname: String
+  email: String
+  phone: String
+}
+
+input BillingContactInput {
+  fullname: String
+  email: String
+  phone: String
+}
+
+enum CarrierRolesEnum {
+  CARRIER_DRIVER
+  CARRIER_OWNER_OPERATOR
+  CARRIER_DISPATCH_OFFICE
+  CARRIER_DISPATCH_DRIVER
+}
+
+input CreateLocationProfileInput {
+  location_name: String!
+  coordinates: CoordinatesInput!
+  address: AddressInput!
+  operational_contact: ContactInput
+  scheduling_contact: ContactInput
+  notes: String
+}
+
+input UpdateLocationProfileInput {
+  location_name: String
+  coordinates: CoordinatesInput
+  address: AddressInput
+  operational_contact: ContactInput
+  scheduling_contact: ContactInput
+  notes: String
+}
+
+input UpdateShipmentInput {
+  short_name: String
+  requested_truck_types: [TruckTypesEnum!]
+  accessorials: [AccessorialsEnum!]
+  load_description: String
+  route_distance_miles: Float
+  route_duration_minutes: Int
+  stops: [CreateStopInput!]
+  items: [ItemInput]
+  trailer: TrailerInput
+}
+
+input UpdateStopInput {
+  location_profile_id: ID
+  appointment_type: AppointmentTypesEnum
+  start_time: DateTimeTz
+  end_time: DateTimeTz
+  type: StopTypesEnum
+  loading_type: LoadingTypesEnum
+  location_input: LocationInput
+}
+
+type Subscription {
+  subscribeMe: String
+}
+
+enum ShipperRolesEnum {
+  SHIPPER
+}
+
+# The available directions for ordering a list of records.
+enum SortOrder {
+  # Sort records in ascending order.
+  ASC
+
+  # Sort records in descending order.
+  DESC
+}
+
+# Allows ordering a list of records.
+input OrderByClause {
+  # The column that is used for ordering.
+  column: String!
+
+  # The direction that is used for ordering.
+  order: SortOrder!
+}
+
+# Pagination information about the corresponding list of items.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
+  # Total number of node in connection.
+  total: Int
+
+  # Count of nodes in current request.
+  count: Int
+
+  # Current page of request.
+  currentPage: Int
+
+  # Last page in connection.
+  lastPage: Int
+}
+
+# Specify if you want to include or exclude trashed results from a query.
+enum Trashed {
+  # Only return trashed results.
+  ONLY
+
+  # Return both trashed and non-trashed results.
+  WITH
+
+  # Only return non-trashed results.
+  WITHOUT
+}

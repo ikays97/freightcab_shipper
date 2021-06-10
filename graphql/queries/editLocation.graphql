@@ -1,0 +1,8 @@
+mutation editLocation (
+  $id: ID!
+  $input: UpdateLocationProfileInput!
+){
+  editLocation(id: $id, input: $input){
+    id
+  }
+}

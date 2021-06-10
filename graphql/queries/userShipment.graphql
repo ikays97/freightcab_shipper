@@ -1,0 +1,77 @@
+query userShipment (
+  $id: ID,
+  $uuid: String
+) {
+  userShipment(id: $id, uuid: $uuid){
+    uuid
+    short_name
+    shipper_id
+    driver_id
+    carrier_id
+    state
+    items{
+      id
+      description
+      handling_piece{
+        piece_type
+        piece_count
+      }
+      units{
+        unit_type
+        unit_count
+      }
+      weight {
+        weight
+        weight_unit
+      }
+    }
+    requested_truck_types
+    trailer {
+      temperature_max
+      temperature_min
+      temperature_unit
+    }
+    route_distance_miles
+    route_duration_minutes
+    load_description
+   	accessorials
+    offer {
+      bid {
+        type
+        cents
+      }
+    }
+    stops{
+      id
+      location_profile_id
+      type
+      appointment_type
+      start_time
+      end_time
+      location_profile {
+        address {
+          full
+          state
+          city
+          street
+          street_number
+          place_id
+        }
+        coordinates {
+          lat
+          lng
+        }
+        scheduling_contact{
+          contact_name
+          phone_number
+          email
+        }
+        operational_contact{
+          contact_name
+          phone_number
+          email
+        }
+      }
+    }
+  }
+}

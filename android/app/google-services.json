@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "24815439527",
+    "firebase_url": "https://clean-composite-303206-default-rtdb.firebaseio.com",
+    "project_id": "clean-composite-303206",
+    "storage_bucket": "clean-composite-303206.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24815439527:android:8f8c2435859f0f4ad45582",
+        "android_client_info": {
+          "package_name": "com.soluchain.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24815439527-qpd3ophdjtuq0goc93blbquirkjne0li.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH5irPf_BWVrjcF5v-2w4TIAUIV2lUF0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24815439527-qpd3ophdjtuq0goc93blbquirkjne0li.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

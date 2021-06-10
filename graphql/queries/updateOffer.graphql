@@ -1,0 +1,7 @@
+mutation updateOffer ($uuid: String!, $shipment: UpdateShipmentInput!)
+{
+  updateShipment(uuid: $uuid, shipment: $shipment){
+    id
+    uuid
+  }
+}

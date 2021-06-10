@@ -1,0 +1,8 @@
+mutation deleteShipper(
+    $id: ID!
+){
+    deleteShipperUser(
+        user_id: $id
+    ) 
+}
+

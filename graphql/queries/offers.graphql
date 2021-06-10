@@ -1,0 +1,29 @@
+query offers(
+    $first: Int!,
+    $page: Int,
+    $shipper_id: ID,
+    $sort: SortTypesEnum,
+    $state: ShipmentStatusEnum,
+){
+    offers(
+        first: $first,
+        page: $page,
+        shipper_id: $shipper_id,
+        sort: $sort,
+        state: $state,
+    ) {
+        data {
+            id
+            shipment {
+                id
+            }
+        }
+        paginatorInfo {
+            currentPage
+            lastPage
+            perPage
+            total
+            count
+        }
+    }
+}

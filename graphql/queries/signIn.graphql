@@ -1,0 +1,6 @@
+mutation signIn($phone: String!, $otp: String!) {
+    verifyPhone(phone: $phone, otp: $otp, remember_me: true) {
+        access_token
+        expires_at
+    }
+}

@@ -1,0 +1,66 @@
+query userShipments (
+  $requested_truck_types: [TruckTypesEnum!]
+  $states: [ShipmentStatusEnum!]
+  $first: Int!
+  $page: Int
+) {
+  userShipments(
+    requested_truck_types: $requested_truck_types,
+    states: $states,
+    first: $first,
+    page: $page
+  ) {
+    data{
+      id
+      uuid
+      state
+      short_name
+      route_distance_miles
+      route_duration_minutes
+      requested_truck_types
+      offer {
+      	bid {
+          type
+          cents
+          carrier {
+            id
+            name
+          }
+        }
+        shipment
+        {
+          carrier_id
+          driver {
+            firstname
+          }
+        }
+      }
+      stops{
+        start_time
+        end_time
+        location_profile{
+          coordinates {
+            lat
+            lng
+          }
+          address{
+            full
+            city
+            state
+            street
+          }
+        }
+      }
+    }
+    paginatorInfo{
+      count
+      currentPage
+      hasMorePages
+      firstItem
+      lastItem
+      lastPage
+      perPage
+      total
+    }
+  }
+}

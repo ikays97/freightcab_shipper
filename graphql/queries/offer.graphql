@@ -1,0 +1,140 @@
+query Offer ($uuid: String) {
+    offer(uuid: $uuid) {
+      carrier_accepted_bid
+      uuid
+      bid {
+        type
+        cents
+        carrier_id
+        carrier {
+          id
+          verified
+          name
+          mc_dot_number
+          contact {
+            phone
+          }
+        }
+      }
+      shipment {
+        id
+        uuid
+        short_name
+        shipper {
+          name
+          tin_ein_number
+          verified
+          address {
+            address
+          }
+          primary_contact {
+            fullname
+            email
+            phone
+          }
+        }
+        driver {
+          id
+          firstname
+        }
+        driver_id
+        carrier_id
+        carrier_assigned
+        driver_assigned
+        route_distance_miles
+        route_duration_minutes
+        requested_truck_types
+        accessorials
+        load_description
+        state
+        path {
+          id
+          order_index
+          coordinates {
+            lat
+            lng
+          }
+          created_at
+        }
+        rate {
+          id
+          rate
+          comment
+        }
+        trailer {
+          temperature_max
+          temperature_min
+          temperature_unit
+        }
+        items {
+          id
+          handling_piece {
+            piece_type
+            piece_count
+          }
+          units {
+            unit_type
+            unit_count
+          }
+          weight {
+            weight
+            weight_unit
+          }
+          description
+        }
+        documents {
+          id
+          stop_id
+          shipment_uuid
+          carrier_id
+          user_id
+          url
+          name
+          file_type
+          mime_type
+          approved
+          created_at
+          updated_at
+        }
+        stops {
+          id
+          order_index
+          appointment_type
+          start_time
+          end_time
+          started_at
+          completed_at
+          type
+          loading_type
+          location_profile {
+            location_name
+            coordinates {
+              lat
+              lng
+            }
+            notes
+            address {
+              full
+              city
+              state
+              street
+              street_number
+              place_id
+            }
+            operational_contact {
+              contact_name
+              email
+              phone_number
+              notes
+            }
+            scheduling_contact {
+              contact_name
+              email
+              phone_number
+              notes
+            }
+          }
+        }
+      }
+    }
+  }

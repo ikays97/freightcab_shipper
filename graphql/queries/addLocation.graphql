@@ -1,0 +1,5 @@
+mutation addLocation($input:CreateLocationProfileInput!){
+  addLocation(input: $input){
+    id
+  }
+}

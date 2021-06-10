@@ -1,0 +1,21 @@
+mutation signUp(
+    $company_name:String!,
+    $email: String!,
+    $firstname: String!,
+    $lastname: String!,
+    $phone: String!,
+    $tin_ein_number: String!,
+    $applied_tc_version: Float
+) {
+    createShipperUser(
+        company_name: $company_name,
+        email: $email,
+        firstname: $firstname,
+        lastname: $lastname,
+        phone: $phone,
+        tin_ein_number: $tin_ein_number,
+        applied_tc_version: $applied_tc_version
+    ) {
+        id
+    }
+}

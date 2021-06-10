@@ -1,0 +1,68 @@
+query me {
+  me{
+    id
+    company_id
+    firstname
+    lastname
+    email
+    phone
+    role
+    type
+    shipper {
+      id
+      verified
+      name
+      tin_ein_number
+      address {
+        address
+        address2
+        city
+        state
+        zip_code
+      }
+      primary_contact {
+        fullname
+        email
+        phone
+      }
+      billing_contact {
+        fullname
+        email
+        phone
+      }
+      billing_address {
+        address
+        address2
+        city
+        state
+        zip_code
+      }
+      users {
+        id
+        firstname
+        lastname
+        email
+        phone
+        role
+        meta {
+          miles
+        }
+      }
+    }
+  }
+}
+
+query meShort {
+  me{
+    id
+    firstname
+    lastname
+    role
+    type
+    shipper {
+      id
+      verified
+      name
+    }
+  }
+}

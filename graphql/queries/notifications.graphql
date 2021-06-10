@@ -1,0 +1,45 @@
+query notifications(
+    $first: Int!,
+    $page: Int,
+    $unread: Boolean,
+){
+    userNotifications(
+        first: $first,
+        page: $page,
+        unread: $unread,
+    ) {
+        data {
+            id
+            data {
+                title
+                body
+            }
+            created_at
+            read_at
+        },
+        paginatorInfo {
+            currentPage
+            lastPage
+            perPage
+            total
+            count
+        }
+    }
+}
+
+query notificationSubsciption($subscribed: Boolean) {
+  userNotificationSubscriptions(subscribed: $subscribed){
+    channel
+    is_subscribed
+    type
+  }
+}
+
+mutation subscribeNotification($type: NotificationsTypeEnum!, $channel: String!){
+    subscribeNotification(type: $type, channel: $channel)
+}
+
+mutation unSubscribeNotification($type: NotificationsTypeEnum!, $channel: String!){
+    unSubscribeNotification(type: $type, channel: $channel)
+}
+

@@ -1,0 +1,8 @@
+mutation updateUserDeviceTokens
+(
+  $token: String!
+) {
+updateUserDeviceTokens(token:$token){
+   id
+  }
+}

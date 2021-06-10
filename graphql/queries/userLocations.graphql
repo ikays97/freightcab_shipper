@@ -1,0 +1,46 @@
+query userLocations(
+  $name: String,
+  $first: Int!,
+  $page: Int,
+)
+{
+  shipperLocationProfiles(name: $name, first: $first, page: $page)
+  {
+    data{
+      id
+      shipper_id
+      location_name
+      address {
+        full
+        city
+        state
+      }
+      coordinates{
+        lat
+        lng
+      }
+      operational_contact{
+        contact_name
+        email
+        phone_number
+        notes
+      }
+      scheduling_contact {
+        contact_name
+        email
+        phone_number
+        notes
+      }
+    }
+  	paginatorInfo {
+        count
+        currentPage
+        hasMorePages
+        firstItem
+        lastItem
+        lastPage
+        perPage
+        total
+    } 
+  }
+}

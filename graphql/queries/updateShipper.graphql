@@ -1,0 +1,5 @@
+mutation updateShipper($input: UpdateShipperInput!){
+    updateShipper(input: $input) {
+        id
+    }
+}

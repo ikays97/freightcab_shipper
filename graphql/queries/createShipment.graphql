@@ -1,0 +1,30 @@
+mutation CreateShipment ($input: OfferInput!) {
+  createOffer(input: $input){
+    id
+    uuid
+  }
+}
+
+mutation rejectShipment($uuid: String!){
+  rejectShipment(uuid: $uuid){
+    id
+  }
+}
+
+mutation bookShipment($uuid: String!){
+  acceptAdminPrice(uuid: $uuid){
+    id
+  }
+}
+
+mutation AssignCarrierToShipment($uuid: String!, $carrier_id: ID!){
+  assignCarrierToShipment(uuid: $uuid, carrier_id: $carrier_id){
+    id
+  }
+}
+
+mutation UnAssignCarrierToShipment($uuid: String!, $carrier_id: ID!){
+  unAssignCarrierFromShipment(uuid: $uuid, carrier_id: $carrier_id){
+    id
+  }
+}

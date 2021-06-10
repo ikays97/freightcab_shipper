@@ -1,0 +1,8 @@
+query getEstimation (
+  $locations: [LocationCollectionInput]!
+) {
+  getEstimations(locations: $locations){
+    route_distance_miles
+    route_duration_minutes
+  } 
+}
